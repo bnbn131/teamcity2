@@ -30,7 +30,7 @@ version = "2024.03"
 project {
     description = "Contains all other projects"
 
-    vcsRoot(Test_1)
+    vcsRoot(Test)
 
     features {
         buildReportTab {
@@ -52,11 +52,10 @@ project {
         }
     }
 
-    subProject(Test)
+    subProject(Teamcity2)
 }
 
-object Test_1 : GitVcsRoot({
-    id("Test")
+object Test : GitVcsRoot({
     name = "test"
     url = "https://github.com/bnbn131/teamcity2.git"
     branch = "main"
@@ -67,16 +66,17 @@ object Test_1 : GitVcsRoot({
 })
 
 
-object Test : Project({
-    name = "TEST"
+object Teamcity2 : Project({
+    name = "Teamcity2"
 
-    vcsRoot(Test_HttpsGithubComBnbn131teamcity2git)
+    vcsRoot(Teamcity2_HttpsGithubComBnbn131teamcity2gitRefsHeadsMain)
 })
 
-object Test_HttpsGithubComBnbn131teamcity2git : GitVcsRoot({
-    name = "https://github.com/bnbn131/teamcity2.git"
+object Teamcity2_HttpsGithubComBnbn131teamcity2gitRefsHeadsMain : GitVcsRoot({
+    name = "https://github.com/bnbn131/teamcity2.git#refs/heads/main"
     url = "https://github.com/bnbn131/teamcity2.git"
     branch = "refs/heads/main"
+    branchSpec = "refs/heads/*"
     authMethod = password {
         userName = "bnbn131"
         password = "credentialsJSON:91cda76b-eca9-4c88-ad94-d0f5466407b2"
