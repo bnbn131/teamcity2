@@ -87,16 +87,10 @@ object Teamcity2_Build : BuildType({
     }
 
     steps {
-        maven {
-            id = "Maven2"
-            goals = "clean test"
-            pomLocation = ".teamcity/pom.xml"
-            runnerArgs = "-Dmaven.test.failure.ignore=true"
-        }
         script {
             name = "Hello"
             id = "Hello"
-            scriptContent = """echo "hello""""
+            scriptContent = """echo "hello world""""
         }
     }
 
