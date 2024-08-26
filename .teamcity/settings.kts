@@ -35,6 +35,7 @@ object Build1 : BuildType({
 
     params {
         param("userName", "TestTC")
+        param("userName11", "TestTC11")
     }
 
     vcs {
