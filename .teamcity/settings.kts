@@ -47,5 +47,9 @@ object Build1 : BuildType({
             id = "simpleRunner"
             scriptContent = """echo "%userName%""""
         }
+         script {
+            id = "simpleRunner11"
+            scriptContent = """echo "%userName11%""""
+        }
     }
 })
