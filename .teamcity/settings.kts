@@ -53,3 +53,24 @@ object Build1 : BuildType({
         }
     }
 })
+
+object Build2 : BuildType({
+    name = "build1"
+
+
+
+    vcs {
+        root(DslContext.settingsRoot)
+    }
+
+    steps {
+        script {
+            id = "simpleRunner"
+            scriptContent = """echo "userName""""
+        }
+         script {
+            id = "simpleRunner11"
+            scriptContent = """echo "userName11""""
+        }
+    }
+})
