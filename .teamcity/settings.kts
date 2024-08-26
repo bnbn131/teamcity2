@@ -55,7 +55,7 @@ object Build1 : BuildType({
 })
 
 object Build2 : BuildType({
-    name = "build1"
+    name = "build2"
 
 
 
