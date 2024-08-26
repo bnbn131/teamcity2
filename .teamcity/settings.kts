@@ -55,6 +55,12 @@ project {
     subProject(Teamcity2)
 }
 
+tasks.register("helloTask") {
+    doLast {
+        println("Hello")
+    }
+}
+
 object Test : GitVcsRoot({
     name = "test"
     url = "https://github.com/bnbn131/teamcity2.git"
