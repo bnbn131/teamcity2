@@ -30,7 +30,7 @@ version = "2024.03"
 project {
     description = "Contains all other projects"
 
-    vcsRoot(Test)
+    vcsRoot(Test_1)
 
     features {
         buildReportTab {
@@ -51,9 +51,12 @@ project {
             preventDependencyCleanup = false
         }
     }
+
+    subProject(Test)
 }
 
-object Test : GitVcsRoot({
+object Test_1 : GitVcsRoot({
+    id("Test")
     name = "test"
     url = "https://github.com/bnbn131/teamcity2.git"
     branch = "main"
@@ -61,4 +64,9 @@ object Test : GitVcsRoot({
         userName = "bnbn131"
         password = "credentialsJSON:3cbbbeeb-27d3-43ee-9aa7-34bf14bdbb22"
     }
+})
+
+
+object Test : Project({
+    name = "TEST"
 })
