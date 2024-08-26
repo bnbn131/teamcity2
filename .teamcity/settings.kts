@@ -69,4 +69,16 @@ object Test_1 : GitVcsRoot({
 
 object Test : Project({
     name = "TEST"
+
+    vcsRoot(Test_HttpsGithubComBnbn131teamcity2git)
+})
+
+object Test_HttpsGithubComBnbn131teamcity2git : GitVcsRoot({
+    name = "https://github.com/bnbn131/teamcity2.git"
+    url = "https://github.com/bnbn131/teamcity2.git"
+    branch = "refs/heads/main"
+    authMethod = password {
+        userName = "bnbn131"
+        password = "credentialsJSON:91cda76b-eca9-4c88-ad94-d0f5466407b2"
+    }
 })
