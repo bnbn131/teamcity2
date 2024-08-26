@@ -1,6 +1,8 @@
 import jetbrains.buildServer.configs.kotlin.*
+import jetbrains.buildServer.configs.kotlin.buildFeatures.perfmon
 import jetbrains.buildServer.configs.kotlin.projectFeatures.buildReportTab
 import jetbrains.buildServer.configs.kotlin.projectFeatures.githubConnection
+import jetbrains.buildServer.configs.kotlin.triggers.vcs
 import jetbrains.buildServer.configs.kotlin.vcs.GitVcsRoot
 
 /*
@@ -55,12 +57,6 @@ project {
     subProject(Teamcity2)
 }
 
-tasks.register("helloTask") {
-    doLast {
-        println("Hello")
-    }
-}
-
 object Test : GitVcsRoot({
     name = "test"
     url = "https://github.com/bnbn131/teamcity2.git"
@@ -75,7 +71,28 @@ object Test : GitVcsRoot({
 object Teamcity2 : Project({
     name = "Teamcity2"
 
+    vcsRoot(Teamcity2_HttpsGithubComBnbn131teamcity2gitRefsHeadsMain1)
     vcsRoot(Teamcity2_HttpsGithubComBnbn131teamcity2gitRefsHeadsMain)
+
+    buildType(Teamcity2_Build)
+})
+
+object Teamcity2_Build : BuildType({
+    name = "Build"
+
+    vcs {
+        root(Teamcity2_HttpsGithubComBnbn131teamcity2gitRefsHeadsMain1)
+    }
+
+    triggers {
+        vcs {
+        }
+    }
+
+    features {
+        perfmon {
+        }
+    }
 })
 
 object Teamcity2_HttpsGithubComBnbn131teamcity2gitRefsHeadsMain : GitVcsRoot({
@@ -87,4 +104,11 @@ object Teamcity2_HttpsGithubComBnbn131teamcity2gitRefsHeadsMain : GitVcsRoot({
         userName = "bnbn131"
         password = "credentialsJSON:91cda76b-eca9-4c88-ad94-d0f5466407b2"
     }
+})
+
+object Teamcity2_HttpsGithubComBnbn131teamcity2gitRefsHeadsMain1 : GitVcsRoot({
+    name = "https://github.com/bnbn131/teamcity2.git#refs/heads/main (1)"
+    url = "https://github.com/bnbn131/teamcity2.git"
+    branch = "refs/heads/main"
+    branchSpec = "refs/heads/*"
 })
