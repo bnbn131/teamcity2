@@ -1,6 +1,7 @@
 import jetbrains.buildServer.configs.kotlin.*
 import jetbrains.buildServer.configs.kotlin.buildSteps.dockerCompose
 import jetbrains.buildServer.configs.kotlin.buildSteps.gradle
+import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.projectFeatures.dockerRegistry
 import jetbrains.buildServer.configs.kotlin.vcs.GitVcsRoot
 
@@ -67,6 +68,10 @@ object Build : BuildType({
             name = "cucumber run"
             id = "cucumber_run"
             tasks = "cucumber"
+        }
+        script {
+            id = "simpleRunner"
+            scriptContent = "docker ps"
         }
     }
 })
