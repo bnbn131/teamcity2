@@ -48,15 +48,12 @@ object Build : BuildType({
     name = "build"
 
     params {
-        param("app_type", "%dep.${depParJobId}.app_type%")
-        param("service_version", "%dep.${depParJobId}.service_version%")
-        param("build_artifacts", "docker")
-        param("DOCKER_BASE_IMAGE", "java/liberica-openjdk-alpine-musl:17.0.6")
+        param("branch", "main")
+        param("git", "https://github.com/bnbn131/teamcity2.git")
     }
+
     vcs {
-        root(vcsRepository)
-        cleanCheckout = true
-        branchFilter = vcsBranchFilter
+        root(GitTest)
     }
 
     steps {
@@ -133,7 +130,6 @@ object Build : BuildType({
 
     requirements { agents("build") }
 })
-
 
 object GitTest : GitVcsRoot({
     name = "git_test"
