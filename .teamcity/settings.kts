@@ -1,5 +1,4 @@
 import jetbrains.buildServer.configs.kotlin.*
-import jetbrains.buildServer.configs.kotlin.buildSteps.dockerCompose
 import jetbrains.buildServer.configs.kotlin.buildSteps.gradle
 import jetbrains.buildServer.configs.kotlin.buildSteps.script
 import jetbrains.buildServer.configs.kotlin.projectFeatures.dockerRegistry
@@ -59,65 +58,21 @@ object Build : BuildType({
 
     steps {
         script {
-            name = "Get cache"
+            name = "docker run"
+            id = "docker_run"
+            workingDir = "workdir"
+            scriptContent = "docker-compose up -d"
+        }
+        gradle {
+            name = "cucumber run"
+            id = "cucumber_run"
+            tasks = "cucumber"
         }
         script {
-            name = "Delete artifact from Nexus-CD"
-        }
-        script {
-            name = "Docker login"
-        }
-        script {
-        }
-        script {
-            name = "Docker build"
-        }
-        script {
-            name = "Docker push"
-        }
-        script {
-            name = "Associate tag with version with artifacts in Nexus-CD"
-            executionMode = BuildStep.ExecutionMode.RUN_ON_FAILURE
-
-            
-        }
-        script{
-            name = "Associate tag TO_DMZ with artifacts in Nexus-CD"
-
-            conditions {
-                equals("deploy_to_dmz", "true")
-                equals("qg", "true")
-            }
-        }
-        script {
-            name = "Docker logout"
-            executionMode = BuildStep.ExecutionMode.ALWAYS
+            id = "simpleRunner"
+            scriptContent = "docker ps"
         }
     }
-
-    dependencies {
-        artifacts(AbsoluteId(depArtifactJobId)) {
-            artifactRules = "**/*"
-        }
-    }
-
-    features {
-        perfmon {
-        }
-    }
-
-    failureConditions {
-        executionTimeoutMin = 15
-        failOnText {
-            conditionType = BuildFailureOnText.ConditionType.CONTAINS
-            pattern = "Out of system resources"
-            failureMessage = "Out of system resources"
-            reverse = false
-            stopBuildOnFailure = true
-        }
-    }
-
-    requirements { agents("build") }
 })
 
 object GitTest : GitVcsRoot({
