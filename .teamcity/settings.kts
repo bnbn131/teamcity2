@@ -57,78 +57,18 @@ object Build : BuildType({
     }
 
     steps {
-        script {
-            name = "Get cache"
-            scriptContent = readScript("files/scripts/build/backend/get_cache.sh")
-        }
-        script {
-            name = "Delete artifact from Nexus-CD"
-            scriptContent = readScript("files/scripts/build/delete_docker_artifact_from_nexus_cd.sh")
-        }
-        script {
-            name = "Docker login"
-            scriptContent = readScript("files/scripts/docker_login.sh")
-        }
-        script {
-            name = "Docker configs"
-            scriptContent = readScript("files/scripts/build/backend/docker_configs.sh")
-        }
-        script {
-            name = "Docker build"
-            scriptContent = readScript("files/scripts/build/backend/docker_build.sh")
-        }
-        script {
-            name = "Docker push"
-            scriptContent = readScript("files/scripts/build/docker_push.sh")
-        }
-        script {
-            name = "Associate tag with version with artifacts in Nexus-CD"
+        dockerCompose {
+            name = "docker run"
+            id = "docker_run"
             executionMode = BuildStep.ExecutionMode.RUN_ON_FAILURE
-            scriptContent = readScript("files/scripts/build/associate_tag_with_version_with_artifact_in_nexus_cd.sh")
-
-            conditions {
-                equals("qg", "true")
-            }
+            file = """src\docker-compose.yml"""
         }
-        script{
-            name = "Associate tag TO_DMZ with artifacts in Nexus-CD"
-            scriptContent = readScript("files/scripts/build/associate_tag_to_dmz_with_artifact_in_nexus_cd.sh")
-
-            conditions {
-                equals("deploy_to_dmz", "true")
-                equals("qg", "true")
-            }
-        }
-        script {
-            name = "Docker logout"
-            executionMode = BuildStep.ExecutionMode.ALWAYS
-            scriptContent = readScript("files/scripts/docker_logout.sh")
+        gradle {
+            name = "cucumber run"
+            id = "cucumber_run"
+            tasks = "cucumber"
         }
     }
-
-    dependencies {
-        artifacts(AbsoluteId(depArtifactJobId)) {
-            artifactRules = "**/*"
-        }
-    }
-
-    features {
-        perfmon {
-        }
-    }
-
-    failureConditions {
-        executionTimeoutMin = 15
-        failOnText {
-            conditionType = BuildFailureOnText.ConditionType.CONTAINS
-            pattern = "Out of system resources"
-            failureMessage = "Out of system resources"
-            reverse = false
-            stopBuildOnFailure = true
-        }
-    }
-
-    requirements { agents("build") }
 })
 
 object GitTest : GitVcsRoot({
