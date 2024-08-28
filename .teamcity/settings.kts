@@ -60,6 +60,8 @@ object Build : BuildType({
         dockerCompose {
             name = "docker run"
             id = "docker_run"
+            executionMode = BuildStep.ExecutionMode.RUN_ON_FAILURE
+            file = """src\docker-compose.yml"""
         }
         gradle {
             name = "cucumber run"
