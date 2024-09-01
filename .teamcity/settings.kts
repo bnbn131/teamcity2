@@ -50,6 +50,7 @@ object Build : BuildType({
     params {
         param("branch", "main")
         param("git", "https://github.com/bnbn131/teamcity2.git")
+        param("qg",  DslContext.getParameter("qg"))
     }
 
     vcs {
